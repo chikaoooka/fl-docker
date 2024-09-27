@@ -1,0 +1,60 @@
+services:
+  server:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    volumes:
+      - ./src:/app/src
+      - ./data:/app/data
+    working_dir: /app/src/server
+    command: python server.py
+    ports:
+      - "5000:5000"
+    networks:
+      - fl_network
+
+  client1:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    volumes:
+      - ./src:/app/src
+      - ./data:/app/data
+    working_dir: /app/src/client
+    command: python client.py 1
+    depends_on:
+      - server
+    networks:
+      - fl_network
+
+  client2:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    volumes:
+      - ./src:/app/src
+      - ./data:/app/data
+    working_dir: /app/src/client
+    command: python client.py 2
+    depends_on:
+      - server
+    networks:
+      - fl_network
+
+  client3:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    volumes:
+      - ./src:/app/src
+      - ./data:/app/data
+    working_dir: /app/src/client
+    command: python client.py 3
+    depends_on:
+      - server
+    networks:
+      - fl_network
+
+networks:
+  fl_network:
+    driver: bridge
